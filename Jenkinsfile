@@ -48,6 +48,8 @@ pipeline {
 	    stage('Cleaning up') { 
           steps { 
                 sh "docker rmi asrafbd/java-app1:v1.$BUILD_ID" 
+		sh "docker stop java-app1" 
+		sh "docker rm java-app1" 
             }
         } 
        stage('Run Docker container on Jenkins Agent') {
