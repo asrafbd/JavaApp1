@@ -24,7 +24,9 @@ pipeline {
          steps {
              echo "Docker image building"
          
-             sh 'docker build -t asrafbd/java-app1:v1.$BUILD_ID .'
+             sh 'docker build -t java-app1:v1.$BUILD_ID .'
+	     sh 'docker tag java-app1:v1.$BUILD_ID asrafbd/java-app1:latest'
+	     sh 'docker tag java-app1:v1.$BUILD_ID asrafbd/java-app1:v1.$BUILD_ID'
              
             }
           }
@@ -40,6 +42,7 @@ pipeline {
 
 			steps {
 				sh "docker push asrafbd/java-app1:v1.$BUILD_ID"
+				sh "docker push asrafbd/java-app1:latest"
 			}
 		}
 	    stage('Cleaning up') { 
@@ -50,7 +53,7 @@ pipeline {
        stage('Run Docker container on Jenkins Agent') {
              
             steps {
-                sh "docker run -d -p 4030:8080 asrafbd/java-app1:v1.$BUILD_ID"
+                sh "docker run -d -p 4030:8080 asrafbd/java-app1:latest"
  
             }
         }
